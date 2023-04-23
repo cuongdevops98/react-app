@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
+import { Octokit } from "octokit";
 
 async function run() {
   try {
@@ -8,16 +9,26 @@ async function run() {
     const body = core.getInput("body");
     const assignees = core.getInput("assignees");
 
-    const octokit = new github.GitHub(token);
-
-    const response = await octokit.issues.create({
-      ...github.context.repo,
-      title,
-      body,
-      assignees: assignees ? assignees.split("\n") : undefined,
+    const octokit = new Octokit({
+      auth: token,
     });
 
-    core.setOutput("issue", JSON.stringify(response.data));
+    const response = await octokit.request(
+      `POST /repos/${github.context.repo.owner}/${github.context.repo.repo}/issues`,
+      {
+        ...github.context.repo,
+        title,
+        body,
+        assignees: assignees ? assignees.split("\n") : undefined,
+        milestone: 1,
+        labels: ["bug"],
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
+
+    core.setOutput("issue", JSON.stringify(response));
   } catch (error) {
     core.setFailed(error.message);
   }
