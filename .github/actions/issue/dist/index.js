@@ -45458,20 +45458,13 @@ async function run() {
       auth: token,
     });
 
-    const response = await octokit.request(
-      `POST /repos/${github.context.repo.owner}/${github.context.repo.repo}/issues`,
-      {
-        ...github.context.repo,
-        title,
-        body,
-        assignees: assignees ? assignees.split("\n") : undefined,
-        milestone: 1,
-        labels: ["bug"],
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
+    const response = await octokit.rest.issues.create({
+      owner: github.context.payload.repository.owner.name,
+      repo: github.context.payload.repository.name,
+      title,
+      body,
+      assignees: assignees ? assignees.split("\n") : undefined,
+    });
 
     core.setOutput("issue", JSON.stringify(response));
   } catch (error) {
