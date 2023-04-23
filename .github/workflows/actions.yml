@@ -10,6 +10,6 @@ jobs:
       - uses: ./.github/actions/hello
         id: hello
         with:
-          who-to-greet: "World"
+          who-to-greet: "error"
       - run: |
           echo "Time is ${{ steps.hello.outputs.time }}"
