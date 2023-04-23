@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}    
     steps:
       - uses: actions/checkout@v2
       - name: Cache node_modules
@@ -27,20 +30,20 @@ jobs:
       - run: npm run test -- --coverage
         env:
           CI: true
-      # - name: Upload Test Coverage
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: code-coverage
-      #     path: coverage
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v1
+        with:
+          name: code-coverage
+          path: coverage
       - name: Build project
         if: github.event_name == 'push'
         run: npm run build
-      # - name: Upload Build Folder
-      #   if: github.event_name == 'push'
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: build
-      #     path: build
+      - name: Upload Build Folder
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
       - name: Zip assets
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
@@ -52,8 +55,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_TOKEN }}
       - name: Deploy to staging
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' && && github.ref == 'refs/heads/develop'
         run: npx surge --project ./build --domain male-cellar.surge.sh
-        env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+      - name: Deploy to Production
+        if: github.event_name == 'push' && && github.ref == 'refs/heads/main'
+        run: npx surge --project ./build --domain frightened-taste.surge.sh
+       
