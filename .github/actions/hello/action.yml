@@ -1,0 +1,17 @@
+name: Hello World
+author: CuongNH34
+description: This is some description
+
+inputs:
+  who-to-greet:
+    description: 'Who to greet'
+    required: true
+    default: 'Cuong'
+
+outputs:
+  time:
+    description: 'Thre greeting time'
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
