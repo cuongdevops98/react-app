@@ -12,9 +12,8 @@ async function run() {
     const body = core.getInput("body");
     const assignees = core.getInput("assignees");
 
-    const octokit = new Octokit({
-      auth: token,
-    });
+    const MyOctokit = Octokit.plugin(restEndpointMethods);
+    const octokit = new MyOctokit({ auth: token });
 
     const response = await octokit.rest.issues.create({
       owner: "cuongdevops98",
