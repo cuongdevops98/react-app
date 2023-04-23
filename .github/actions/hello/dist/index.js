@@ -9798,6 +9798,10 @@ try {
     throw new Error("Some error message");
   }
 
+  core.debug("This is a debug message");
+  core.warning("This is a warning message");
+  core.error("This is an error message");
+
   console.log(`Hello ${name}`);
 
   const time = new Date();
