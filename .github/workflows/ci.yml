@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}    
+      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - name: Cache node_modules
@@ -60,4 +60,3 @@ jobs:
       - name: Deploy to Production
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx surge --project ./build --domain frightened-taste.surge.sh
-       
