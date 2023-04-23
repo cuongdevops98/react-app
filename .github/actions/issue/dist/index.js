@@ -8970,7 +8970,7 @@ function createNodeMiddleware(app, {
   if (onUnhandledRequest) {
     app.octokit.log.warn("[@octokit/oauth-app] `onUnhandledRequest` is deprecated and will be removed from the next major version.");
   }
-  onUnhandledRequest ?? (onUnhandledRequest = onUnhandledRequestDefaultNode);
+  onUnhandledRequest = onUnhandledRequestDefaultNode;
   return async function (request, response, next) {
     const octokitRequest = parseRequest(request);
     const octokitResponse = await handleRequest(app, {
