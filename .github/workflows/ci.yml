@@ -58,6 +58,6 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         run: npx surge --project ./build --domain male-cellar.surge.sh
       - name: Deploy to Production
-        if: github.event_name == 'push' && && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx surge --project ./build --domain frightened-taste.surge.sh
        
