@@ -14,9 +14,10 @@ async function run() {
     });
 
     const response = await octokit.request(
-      `POST /repos/${github.context.repo.owner}/${github.context.repo.repo}/issues`,
+      `POST /repos/${github.context.payload.repository.owner.name}/${github.context.payload.repository.name}/issues`,
       {
-        ...github.context.repo,
+        owner: github.context.payload.repository.owner.name,
+        repo: github.context.payload.repository.name,
         title,
         body,
         assignees: assignees ? assignees.split("\n") : undefined,
