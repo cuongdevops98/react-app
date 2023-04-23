@@ -10,14 +10,15 @@ jobs:
       - uses: ./.github/actions/issue
         id: issue
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CUSTOM_TOKEN }}
           title: Title
           body: Body
           assignees: cuongdevops98
+      - run: echo ${{ steps.issue.output.issue }}
       - uses: ./.github/actions/hello
+        if: always()
         id: hello
         with:
           who-to-greet: "Cuong"
       - run: |
           echo "Time is ${{ steps.hello.outputs.time }}"
-          echo ${{ steps.issue.output.issue }}
